@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>نموذج طلب فيزا تركيا - DD3</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      background: url('https://i2.wp.com/poster1.net/wp-content/uploads/2018/09/1430-3.jpg') center/cover no-repeat;
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: white;
+    }
+
+    /* شريط الإعلان المتحرك - لون أحمر مع تدرج متحرك */
+    #banner {
+      background: linear-gradient(90deg,
+        #ff0000 0%,
+        #ff4d4d 20%,
+        #ff1a1a 40%,
+        #ff4d4d 60%,
+        #ff0000 80%,
+        #ff1a1a 100%);
+      overflow: hidden;
+      white-space: nowrap;
+      height: 50px;
+      position: relative;
+      border-radius: 0 0 20px 20px;
+      animation: borderGradient 4s linear infinite;
+      box-shadow: 0 0 15px #ff0000;
+      border: 2px solid transparent;
+      background-size: 400% 400%;
+    }
+    @keyframes borderGradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* نص الشريط مع تأثير الصقيع */
+    .scrolling-text {
+      display: inline-block;
+      position: absolute;
+      right: -100%;
+      white-space: nowrap;
+      font-size: 1.1rem;
+      font-weight: bold;
+      padding: 15px 0;
+      background: linear-gradient(90deg, #e0f7ff, #a7d8ff, #d0f0ff, #a7d8ff, #e0f7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 100%;
+      animation: scrollText 20s linear infinite, frostColor 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes scrollText {
+      0%   { right: -100%; }
+      100% { right: 100%; }
+    }
+    @keyframes frostColor {
+      0% {
+        background-position: 0% 50%;
+        filter: drop-shadow(0 0 3px #a7d8ff);
+      }
+      50% {
+        background-position: 100% 50%;
+        filter: drop-shadow(0 0 8px #d0f0ff);
+      }
+      100% {
+        background-position: 0% 50%;
+        filter: drop-shadow(0 0 3px #a7d8ff);
+      }
+    }
+
+    /* كلمة DD3 مع تأثير السقوط والعودة */
+    .dd3 {
+      position: absolute;
+      top: 15px;
+      right: 10px;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #e63946;
+      cursor: default;
+      user-select: none;
+      /* نص بتأثير صقيع أيضًا */
+      background: linear-gradient(90deg, #e0f7ff, #a7d8ff, #d0f0ff, #a7d8ff, #e0f7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 100%;
+      filter: drop-shadow(0 0 5px #e63946);
+      animation: frostColor 4s ease-in-out infinite alternate;
+      transform-origin: top center;
+      z-index: 10;
+    }
+
+    /* خيط السحب */
+    .rope {
+      position: absolute;
+      top: 50px;
+      right: 40px;
+      width: 2px;
+      height: 0;
+      background: #e63946;
+      transform-origin: top center;
+      z-index: 9;
+      opacity: 0;
+    }
+
+    /* حركة سقوط كلمة DD3 */
+    @keyframes dropDD3 {
+      0% { top: 15px; }
+      50% { top: 100px; }
+      100% { top: 15px; }
+    }
+
+    /* حركة إرتداد (سحب) مع الخيط */
+    @keyframes ropeExpand {
+      0% {
+        height: 0;
+        opacity: 1;
+      }
+      50% {
+        height: 85px;
+        opacity: 1;
+      }
+      100% {
+        height: 0;
+        opacity: 0;
+      }
+    }
+
+    form {
+      background: rgba(0,0,0,0.75);
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.9);
+    }
+    .form-group { margin-bottom: 18px; }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+    input, select, button {
+      width: 100%;
+      font-family: 'Cairo', sans-serif;
+      padding: 10px 12px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      box-sizing: border-box;
+    }
+    input:focus, select:focus {
+      outline: 2px solid #1e90ff;
+      background-color: #f0f8ff;
+      color: #000;
+    }
+    button {
+      background: #1e90ff;
+      color: white;
+      cursor: pointer;
+      padding: 14px 0;
+      font-weight: 700;
+      margin-top: 14px;
+      transition: background 0.3s, transform 0.2s;
+    }
+    button:hover:not(:disabled) {
+      background: #104e8b;
+      transform: scale(1.02);
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    @media (max-width: 550px) {
+      form { margin: 20px 15px; padding: 20px; }
+    }
+
+    #statusPopup {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.85);
+      color: white;
+      padding: 25px 35px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: none;
+      z-index: 1000;
+    }
+    .spinner-text {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      font-weight: 900;
+      font-size: 2.8rem;
+      animation: spin 1.5s linear infinite;
+      margin-bottom: 10px;
+    }
+    .spinner-text span:nth-child(1){ color:#e63946; }
+    .spinner-text span:nth-child(2){ color:#f1faee; }
+    .spinner-text span:nth-child(3){ color:#457b9d; }
+    @keyframes spin {
+      0%{ transform: rotate(0deg);}100%{ transform: rotate(360deg);}
+    }
+  </style>
+</head>
+<body>
+
+  <div id="banner">
+    <div class="scrolling-text" id="scrollingText">
+     يقدم لكم افضل الخدمات السياحية وبأفضل الآسعار وملف تقديم الفيزا DD3 مكتب
+    </div>
+    <div class="dd3">DD3</div>
+    <div class="rope"></div>
+  </div>
+
+  <form id="dataForm">
+    <div class="form-group">
+      <label>الاسم الكامل</label>
+      <input type="text" id="fullName" required autocomplete="name" />
+    </div>
+    <div class="form-group">
+      <label>تاريخ الميلاد</label>
+      <input type="date" id="birthDate" max="" required />
+    </div>
+    <div class="form-group">
+      <label>محافظة الإقامة بالعراق</label>
+      <select id="province" required>
+        <option value="">اختر المحافظة</option>
+        <option>بغداد</option><option>البصرة</option><option>نينوى</option><option>أربيل</option><option>بابل</option><option>كركوك</option>
+        <option>دهوك</option><option>الأنبار</option><option>السليمانية</option><option>ميسان</option><option>ذي قار</option><option>كربلاء</option>
+        <option>صلاح الدين</option><option>واسط</option><option>القادسية</option><option>حلبجة</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>رقم الهاتف</label>
+      <input type="tel" id="phoneNumber" pattern="[0-9]{10,15}" required autocomplete="tel" />
+    </div>
+    <div class="form-group">
+      <label>رقم جواز السفر</label>
+      <input type="text" id="passportNumber" required />
+    </div>
+    <div class="form-group">
+      <label>البريد الإلكتروني</label>
+      <input type="email" id="email" required autocomplete="email" />
+    </div>
+    <div class="form-group">
+      <label>الغرض من السفر</label>
+      <select id="travelPurpose" required>
+        <option value="">اختر الغرض</option><option>سياحة</option><option>عمل</option><option>دراسة</option><option>زيارة عائلية</option><option>أخرى</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>مدة الإقامة المطلوبة (باليوم)</label>
+      <input type="number" id="stayDuration" min="1" max="365" required />
+    </div>
+    <div class="form-group">
+      <label>مكان الإقامة في تركيا (المدينة)</label>
+      <select id="stayPlace" required>
+        <option value="">اختر المدينة</option><option>أدانا</option><option>أديامان</option><option>آغري</option><option>أكشاراي</option><option>أماسيا</option>
+        <option>أنقرة</option><option>أنطاليا</option><option>أردهان</option><option>أرتڤين</option><option>أيدن</option><option>بالقسير</option><option>بارتين</option>
+        <option>باتمان</option><option>بايبورت</option><option>بيليك</option><option>بينغول</option><option>بتليس</option><option>بولو</option><option>بردور</option><option>بورصا</option>
+        <option>تشانكالة</option><option>تشانكيري</option><option>تشوروم</option><option>دينزلي</option><option>ديار بكر</option><option>دوزجه</option><option>أدرنة</option><option>الازيغ</option><option>ارزينجان</option><option>أرزوروم</option><option>اسكي شهير</option><option>غازي عنتاب</option><option>غيرسون</option><option>جوموشانة</option><option>هاكاري</option><option>هاتاي</option><option>اغدر</option><option>اسبارتا</option><option>اسطنبول</option><option>إزمير</option><option>قارص</option><option>قونيا</option><option>قاساطمانو</option><option>كهرمان مرعش</option><option>قره بورتلو</option><option>قوتشه حصار</option><option>كيليس</option><option>شانل اورفة</option><option>شارناق</option><option>سامسون</option><option>سيواس</option><option>سقاريا</option><option>تكرداغ</option><option>طرابزون</option><option>طركالرلي</option><option>تونجلي</option><option>طكاداغ</option><option>ازمير</option><option>موش</option><option>مرسين</option><option>دنيزلي الجديدة</option><option>نفي شهر</option><option>نيغدة</option><option>أوردو</option><option>أوسمانية</option><option>ريزه</option><option>يوزغات</option><option>زلغولداك</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>هل سبق لك السفر إلى تركيا؟</label>
+      <select id="previousVisit" required>
+        <option value="">اختر</option><option>نعم</option><option>لا</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>الوظيفة</label>
+      <input type="text" id="job" required />
+    </div>
+
+    <button type="submit" id="submitBtn">إرسال الطلب</button>
+  </form>
+
+  <div id="statusPopup">
+    <div class="spinner-text" id="spinnerText"><span>D</span><span>D</span><span>3</span></div>
+    <div id="statusText">جاري الإرسال...</div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCfl8CkFQvi8dGYIW8nX-Mc3AcCmldb120",
+      authDomain: "visa-4206d.firebaseapp.com",
+      projectId: "visa-4206d",
+      storageBucket: "visa-4206d.firebasestorage.app",
+      messagingSenderId: "916717740259",
+      appId: "1:916717740259:web:50010ad706ed0332d265d6"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    document.getElementById('birthDate').max = new Date().toISOString().split('T')[0];
+
+    const form = document.getElementById("dataForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const statusPopup = document.getElementById("statusPopup");
+    const statusText = document.getElementById("statusText");
+    const spinnerText = document.getElementById("spinnerText");
+
+    // عناصر حركة الشريط والكلمة DD3
+    const scrollingText = document.getElementById('scrollingText');
+    const dd3 = document.querySelector('.dd3');
+    const rope = document.querySelector('.rope');
+
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      statusPopup.style.display = "block";
+      spinnerText.style.display = "flex";
+      statusText.textContent = "جاري الإرسال...";
+
+      try {
+        await addDoc(collection(db, "visaForms"), {
+          fullName: form.fullName.value.trim(),
+          birthDate: form.birthDate.value,
+          province: form.province.value,
+          phoneNumber: form.phoneNumber.value.trim(),
+          passportNumber: form.passportNumber.value.trim(),
+          email: form.email.value.trim(),
+          travelPurpose: form.travelPurpose.value,
+          stayDuration: Number(form.stayDuration.value),
+          stayPlace: form.stayPlace.value,
+          previousVisit: form.previousVisit.value,
+          job: form.job.value.trim(),
+          createdAt: new Date()
+        });
+
+        spinnerText.style.display = "none";
+        statusText.textContent = "تم التقديم";
+        form.reset();
+        setTimeout(() => {
+          statusPopup.style.display = "none";
+          submitBtn.disabled = false;
+        }, 5000);
+
+      } catch {
+        alert("خطأ في الإرسال، حاول مرة أخرى.");
+        statusPopup.style.display = "none";
+        submitBtn.disabled = false;
+      }
+    });
+
+    // تحريك DD3 عندما تصل النص إلى المنتصف
+    // سنحسب موقع scrollingText كل 20ms ونشغل الحركة حينها
+
+    function animateDropAndPull() {
+      dd3.style.animation = "dropDD3 2s forwards";
+
+      rope.style.opacity = "1";
+      rope.style.animation = "ropeExpand 2s forwards";
+
+      setTimeout(() => {
+        dd3.style.animation = "";
+        rope.style.animation = "";
+        rope.style.opacity = "0";
+        dd3.style.top = "15px"; // إعادة لموضع البداية
+      }, 2000);
+    }
+
+    function checkAndTrigger() {
+      const bannerRect = document.getElementById('banner').getBoundingClientRect();
+      const scrollRect = scrollingText.getBoundingClientRect();
+
+      // منتصف الشريط أفقياً
+      const bannerMidX = bannerRect.left + bannerRect.width / 2;
+
+      // نتحقق هل كلمة "DD3" موجودة داخل النص واصبحت في منتصف الشريط؟
+      // سنقيس حدود النص scrollingText
+
+      // سنبحث عن موقع كلمة "DD3" داخل scrollingText من خلال حساب نسبة تحرك النص
+      // بدل تعقيد: سنحسب موقع scrollingText.right بالنسبة للنافذة، عندما تقترب من منتصف الشريط نقوم بتشغيل الحركة
+
+      const dd3Right = dd3.getBoundingClientRect().right;
+
+      // إذا كانت  ضمن النصف الأيسر من الشريط تقريباً (أو وصلت منتصف البانر)
+      if (dd3Right > bannerMidX - 20 && dd3Right < bannerMidX + 20) {
+        // نشغل الحركة مرة واحدة فقط
+        if (!dd3.classList.contains('dropping')) {
+          dd3.classList.add('dropping');
+          animateDropAndPull();
+
+          // إزالة class بعد انتهاء الحركة
+          setTimeout(() => dd3.classList.remove('dropping'), 2100);
+        }
+      }
+    }
+
+    setInterval(checkAndTrigger, 30);
+
+  </script>
+</body>
+</html>
